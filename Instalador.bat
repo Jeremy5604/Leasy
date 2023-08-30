@@ -15,4 +15,4 @@ pip install wikipedia
 pip install requests
 pip install setuptools
 pip install urllib3
-pip install os
+::pip install os
