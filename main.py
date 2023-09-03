@@ -1,42 +1,45 @@
 import pyautogui as ptg
-ptg.hotkey("win","d")#Oculta la ventana de la terminal de windows
-from datetime import datetime
+#Oculta la ventana de la terminal de windows
+#ptg.hotkey("win","d")
+
 import speech_recognition as sr
-import pyttsx3
 import pywhatkit
 import wikipedia
 import time
 from datetime import datetime
+import tools 
 
 
-
-import pyautogui as ptg
 #Para estudio 
 import os
 import sys
-import platform
+#import platform
 
 
-#ptg.mouseInfo()
+#Herramientas/tools:
+ptg_tools = tools.pyautogui_tools()
+ptt3_tools = tools.pyttsx3_tools()
+sr_tools = tools.speech_recognition_tools()
+
+
+
 
 #Variables principales
+Recognizer = sr_tools.create_recognizer() 
+current_time = datetime.now()
 
+#Configuración de voz
+ptt3_tools.set_Properties_voice()
+#ptt3_tools.talk("abcdefghijklmnñopqrstuvwxyzaaaa")
+#sys.exit()
+#
 
-receptor = sr.Recognizer()
-tiempoSincronizado = datetime.now()
-
-
-
-
-#características de voz 
-engine = pyttsx3.init()
-engine.setProperty('rate', 150)
 comandos = {"reproduce":" Reproduce un video en youtube",
             "hola":" saluda",
             "fecha":" Indica la fecha",
             "hora":" Indica la hora",
             "busca":" Investiga información en wikipedia",
-            "clase":" Inicia clases en meet según el horario",
+           #"clase":" Inicia clases en meet según el horario",
             "Spotify":" Reproduce playlist de canciones favoritas",
             "modo Estudio":" Activa el modo de estudio rutinario",
             "comandos": " Informa al usuario sobre los comandos disponibles"}
@@ -46,20 +49,18 @@ comandos = {"reproduce":" Reproduce un video en youtube",
 
 def listen_and_transcribe():#Recibe texto oralmente
     with sr.Microphone() as source:
-        talk('Escuchando...')
-        #audio = receptor.adjust_for_ambient_noise(source,duration=5)
-        audio = receptor.listen(source)
+        ptt3_tools.talk('Escuchando...')
+        #audio = Recognizer.adjust_for_ambient_noise(source,duration=5)
+        audio = Recognizer.listen(source)
         try:
-            text = receptor.recognize_google(audio, language='es-ES')
+            text = Recognizer.recognize_google(audio, language='es-ES')
         except sr.UnknownValueError:
-            talk('No se pudo reconocer el audio')
+            ptt3_tools.talk('No se pudo reconocer el audio')
             text = None
     return text
 
-def talk(texto):#Reproduce texto en altavoz
-    engine.say(texto)
-    engine.runAndWait()
-    pass
+
+
 
 
 
@@ -83,7 +84,7 @@ def SpotifyMusic():#REVISIÓN DE ESTE MÉTODO
     time.sleep(4)
     ptg.click(214,315,1)
     time.sleep(2)
-    talk("Reproduciendo canciones favoritas en Spotify")
+    ptt3_tools.talk("Reproduciendo canciones favoritas en Spotify")
     ptg.click(552,493,1)
 
 
@@ -106,124 +107,124 @@ def abrirNavegador():#REVISIÓN DE ESTE MÉTODO
         if time.strftime("%A") == "Monday":
             if (hora, min) >= (7,00) and (hora, min) < (8, 30):
                 haveError=True
-                talk("Hoy tienes clase de Ingenieria de Procesos")
-                talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Ingenieria de Procesos")
+                ptt3_tools.talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Ingenieria de Procesos
             elif (hora, min) >= (8, 30) and (hora, min) < (10, 00):
-                talk("Hoy tienes clase de Estadistica")
+                ptt3_tools.talk("Hoy tienes clase de Estadistica")
                 ptg.moveTo(651,749,0.05)  # Estadistica
             elif (hora, min) >= (10, 00) and (hora, min) < (12, 00):
-                talk("Hoy tienes clase de Algebra Lineal")
+                ptt3_tools.talk("Hoy tienes clase de Algebra Lineal")
                 ptg.moveTo(1057,752,0.05)  # Algebra Lineal
             elif (hora, min) >= (13, 00)and (hora, min) < (16, 00):
-                talk("Hoy tienes clase de Psicología")
+                ptt3_tools.talk("Hoy tienes clase de Psicología")
                 ptg.moveTo(1041,338,0.05)  # Psicologia
             else:
                 haveError=True
-                talk(
+                ptt3_tools.talk(
                     "El día de hoy no tienes clases programadas para las " + str(hora) + " , " + str(min)+" horas"
                 )
         elif time.strftime("%A") == "Tuesday":
             if (hora, min) >= (7,00) and (hora, min) < (8, 30):
-                talk("Hoy tienes clase de Estructura de Datos")
+                ptt3_tools.talk("Hoy tienes clase de Estructura de Datos")
                 ptg.moveTo(236,754,0.05)  # Estructura de Datos
             elif (hora, min) >= (8, 30) and (hora, min) < (10, 00):
-                talk("Hoy tienes clase de Algebra Lineal")
+                ptt3_tools.talk("Hoy tienes clase de Algebra Lineal")
                 ptg.moveTo(1057,752,0.05)  # Algebra Lineal
             elif (hora, min) >= (10, 00) and (hora, min) < (12, 00):
                 haveError=True
-                talk("Hoy tienes clase de Ingenieria de Procesos")
-                talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Ingenieria de Procesos")
+                ptt3_tools.talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Ingenieria de Procesos
             elif (hora, min) >= (14, 00)and (hora, min) < (16, 00):
-                talk("Hoy tienes clase de Psicología")
+                ptt3_tools.talk("Hoy tienes clase de Psicología")
                 ptg.moveTo(1041,338,0.05)  # Psicologia
             else:
                 haveError=True
-                talk(
+                ptt3_tools.talk(
                     "El día de hoy no tienes clases programadas para las " + str(hora) + " , " + str(min)+" horas"
                 )
         elif time.strftime("%A") == "Wednesday":
             if (hora, min) >= (7,00) and (hora, min) < (8, 30):
-                talk("Hoy tienes clase de Concepción Física del Universo")
+                ptt3_tools.talk("Hoy tienes clase de Concepción Física del Universo")
                 ptg.moveTo(256,350,0.05)  # Concepción Fisica Del Universo
             elif (hora, min) >= (8, 30) and (hora, min) < (10, 00):
                 haveError=True
-                talk("Hoy tienes clase de Ingenieria de Procesos")
-                talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Ingenieria de Procesos")
+                ptt3_tools.talk("El horario de la clase de Ingenieria de Procesos aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Ingenieria de Procesos
             elif (hora, min) >= (10, 00) and (hora, min) < (12, 00):
-                talk("Hoy tienes clase de Estructura de Datos")
+                ptt3_tools.talk("Hoy tienes clase de Estructura de Datos")
                 ptg.moveTo(236,754,0.05)  # Estructura de Datos
             elif (hora, min) >= (13, 00) and (hora, min) < ( 14, 00):
                 haveError=True
-                talk("Hoy tienes clase de Química")
-                talk("El horario de la clase de Química aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Química")
+                ptt3_tools.talk("El horario de la clase de Química aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Quimica
             elif (hora, min) >= (14, 00)and (hora, min) < (15, 00):
-                talk("Hoy tienes clase de Psicología")
+                ptt3_tools.talk("Hoy tienes clase de Psicología")
                 ptg.moveTo(1041,338,0.05)  # Psicologia
             elif (hora, min) >= (15, 00)and (hora, min) < (16, 00):
-                talk("Hoy tienes clase de Microeconomia")
+                ptt3_tools.talk("Hoy tienes clase de Microeconomia")
                 ptg.moveTo(657,347,0.05)  # Microeconomia
             else:
                 haveError=True
-                talk(
+                ptt3_tools.talk(
                     "El día de hoy no tienes clases programadas para las " + str(hora) + " , " + str(min)+" horas"
                 )
         elif time.strftime("%A") == "Thursday":
             if (hora, min) >= (7,00) and (hora, min) < (8, 30):
-                talk("Hoy tienes clase de Estadistica")
+                ptt3_tools.talk("Hoy tienes clase de Estadistica")
                 ptg.moveTo(651,749,0.05)  # Estadistica
             elif (hora, min) >= (8, 30) and (hora, min) < (10, 00):
-                talk("Hoy tienes clase de Estructura de Datos")
+                ptt3_tools.talk("Hoy tienes clase de Estructura de Datos")
                 ptg.moveTo(236,754,0.05)  # Estructura de Datos
             elif (hora, min) >= (10, 00) and (hora, min) < (12, 00):
-                talk("Hoy tienes clase de Concepción Física del Universo")
+                ptt3_tools.talk("Hoy tienes clase de Concepción Física del Universo")
                 ptg.moveTo(256,350,0.05)  # Concepción Fisica Del Universo
             elif (hora, min) >= (12, 00) and (hora, min) < ( 14, 00):
                 haveError=True
-                talk("Hoy tienes clase de Química")
-                talk("El horario de la clase de Química aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Química")
+                ptt3_tools.talk("El horario de la clase de Química aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Quimica
             elif (hora, min) >= (14, 00)and (hora, min) < (16, 00):
-                talk("Hoy tienes clase de Microeconomia")
+                ptt3_tools.talk("Hoy tienes clase de Microeconomia")
                 ptg.moveTo(657,347,0.05)  # Microeconomia
             else:
                 haveError=True
-                talk(
+                ptt3_tools.talk(
                     "El día de hoy no tienes clases programadas para las " + str(hora) + " , " + str(min)+" horas"
                 )
         elif time.strftime("%A") == "Friday":
             if (hora, min) >= (7,00) and (hora, min) < (8, 30):
-                talk("Hoy tienes clase de Algebra Lineal")
+                ptt3_tools.talk("Hoy tienes clase de Algebra Lineal")
                 ptg.moveTo(1057,752,0.05)  # Algebra Lineal
             elif (hora, min) >= (8, 30) and (hora, min) < (10, 00):
-                talk("Hoy tienes clase de Concepción Física del Universo")
+                ptt3_tools.talk("Hoy tienes clase de Concepción Física del Universo")
                 ptg.moveTo(256,350,0.05)  # Concepción Fisica Del Universo
             elif (hora, min) >= (10, 00) and (hora, min) < (12, 00):
-                talk("Hoy tienes clase de Estadistica")
+                ptt3_tools.talk("Hoy tienes clase de Estadistica")
                 ptg.moveTo(651,749,0.05)  # Estadistica
             elif (hora, min) >= (12, 00) and (hora, min) < (14, 00):
                 haveError=True
-                talk("Hoy tienes clase de Química")
-                talk("El horario de la clase de Química aun no ha sido programada")
+                ptt3_tools.talk("Hoy tienes clase de Química")
+                ptt3_tools.talk("El horario de la clase de Química aun no ha sido programada")
                 #ptg.moveTo(657,347,0.05)  # Quimica
             elif (hora, min) > (14, 00) and (hora, min) < (16, 00):
-                talk("Hoy tienes clase de Microeconomia")
+                ptt3_tools.talk("Hoy tienes clase de Microeconomia")
                 ptg.moveTo(657,347,0.05)  # Microeconomia
             else:
                 haveError=True
-                talk(
+                ptt3_tools.talk(
                     "El día de hoy no tienes clases programadas para las " + str(hora) + " , " + str(min)+" horas"
                 )
         elif time.strftime("%A") == "Saturday":
             haveError=True
-            talk("Hoy es sabado, no tienes clases para hoy")
+            ptt3_tools.talk("Hoy es sabado, no tienes clases para hoy")
 
         elif time.strftime('%A') == 'Sunday':
             haveError=True
-            talk("Hoy es sabado, no tienes clases para hoy")
+            ptt3_tools.talk("Hoy es sabado, no tienes clases para hoy")
         return haveError
 
     def navegacionMeet():
@@ -241,7 +242,7 @@ def abrirNavegador():#REVISIÓN DE ESTE MÉTODO
         ptg.moveTo(1355,587, 0.5)
 
     def mensajeFinal():
-        talk("Ya puedes iniciar la clase, solo falta la confirmación")
+        ptt3_tools.talk("Ya puedes iniciar la clase, solo falta la confirmación")
 
 
 
@@ -252,39 +253,48 @@ def abrirNavegador():#REVISIÓN DE ESTE MÉTODO
         navegacionMeet()
         mensajeFinal()
     else:
-        talk("Proceso Terminado")
+        ptt3_tools.talk("Proceso Terminado")
 
 def play_on_youtube():#Reproduce multimedia en Youtube
-    talk("Claro, Indica el nombre de la canción o video")
+    ptt3_tools.talk("Claro, Indica el nombre de la canción o video")
     music = listen_and_transcribe()
     pywhatkit.playonyt(music)
 
 def search_on_Wikipedia():#Busca información en wikipedia, respuesta especifica = 5 orciones, resumida = 1
-    talk("Claro, Indica el tema a buscar en wikipedia")
+    ptt3_tools.talk("Claro, Indica el tema a buscar en wikipedia")
     issue = listen_and_transcribe()
     wikipedia.set_lang('es')
-    talk("¿Desea una respuesta especifica o resumida?")
+    ptt3_tools.talk("¿Desea una respuesta especifica o resumida?")
     if listen_and_transcribe()[:4] == "resu":
         word_length = 1
     else:
         word_length = 5
-    talk('Buscando ' + issue)
-    informacion = wikipedia.summary(issue, sentences = word_length, auto_suggest = True,redirect=True)
-    talk(informacion)
+    ptt3_tools.talk('Buscando ' + issue)
+
+    try:
+        informacion = wikipedia.summary(issue, sentences = word_length, auto_suggest = True,redirect=True)
+        ptt3_tools.talk(informacion)
+    except wikipedia.exceptions.PageError:
+        ptt3_tools.talk("La página buscada no existe")
+    except:
+        ptt3_tools.talk("Lo lamento, hubo un error no controlado al buscar la página, intentelo nuevamente")
+
+
+
     
 def tell_the_time():
-    talk(" Son las " + str(tiempoSincronizado.hour) + " con " + str(tiempoSincronizado.minute) + " minutos ")
+    ptt3_tools.talk(" Son las " + str(current_time.hour) + " con " + str(current_time.minute) + " minutos ")
 
 def indicate_the_date():
-    talk("Hoy es  " + str(tiempoSincronizado.day) + " del mes  " + str(tiempoSincronizado.month) + " del " + str(tiempoSincronizado.year))
+    ptt3_tools.talk("Hoy es  " + str(current_time.day) + " del mes  " + str(current_time.month) + " del " + str(current_time.year))
     
 def buenDia():
-    if tiempoSincronizado.hour >= 6 and tiempoSincronizado.hour < 13:
-        talk("Buenos días Jeremy")
-    elif tiempoSincronizado.hour >= 13 and tiempoSincronizado.hour < 18:
-        talk("Buenas tardes Jeremy")
+    if current_time.hour >= 6 and current_time.hour < 13:
+        ptt3_tools.talk("Buenos días Jeremy")
+    elif current_time.hour >= 13 and current_time.hour < 18:
+        ptt3_tools.talk("Buenas tardes Jeremy")
     else:
-        talk("Buenas noches Jeremy")
+        ptt3_tools.talk("Buenas noches Jeremy")
 
     indicate_the_date()
     tell_the_time()
@@ -301,9 +311,9 @@ def buscarAccion(orden):
     elif 'busca' in orden:
         search_on_Wikipedia()
     #elif 'clase' in orden:
-        #talk("Entendido.")
-        #talk("Abriendo classroom")
-        #iniciarClase()
+        #ptt3_tools.talk("Entendido.")
+        #ptt3_tools.talk("Abriendo classroom")
+        #
     elif 'spotify' in orden:
         SpotifyMusic()
     elif 'estudio' in orden:
@@ -311,14 +321,14 @@ def buscarAccion(orden):
     elif 'comandos' in orden:
         speak_Comands()
     else:
-        talk('No se reconoció el comando')
+        ptt3_tools.talk('No se reconoció el comando')
 
 
 
 def speak_Comands():
-     talk("Los comandos disponibles son:")
+     ptt3_tools.talk("Los comandos disponibles son:")
      for x in comandos:
-         talk(x + ", Función: " + comandos.get(x))
+         ptt3_tools.talk(x + ", Función: " + comandos.get(x))
 
 
 def search_on_navegator(ruta):
@@ -330,17 +340,17 @@ def search_on_navegator(ruta):
 
 
 def iniciarAsistente():
-    talk("Hola")
+    ptt3_tools.talk("Hola")
     resp = False
     while (resp == False):
-        #talk("Comandos disponibles") 
+        #ptt3_tools.talk("Comandos disponibles") 
         ##print(end = "|")
         #for i in comandos:
             #print(i,end="| |")
         #print(end = "|\n")
         text = listen_and_transcribe()
         if text!= None:
-            #talk("Vuelve a intentarlo")
+            #ptt3_tools.talk("Vuelve a intentarlo")
             resp= True
             #os.system("cls")#Limpia la consola en la terminal
     return text
@@ -350,11 +360,12 @@ def iniciarAsistente():
 
 
 def modoEstudio():
-    talk("Iniciando modo Estudio")
-    os.system("start C:\\Users\\Jerem\\AppData\\Local\\Programs\\Notion\\Notion.exe")
-    talk("Retomando curso en Cisc for All")
+    ptt3_tools.talk("Iniciando modo Estudio")
+    #os.system("start C:\\Users\\Jerem\\AppData\\Local\\Programs\\Notion\\Notion.exe")
+    ptt3_tools.talk("Retomando curso en Cisc for All")
+    #C:\Users\Jerem\AppData\Local\Programs\Opera GX
     os.system("start C:\\Users\\Jerem\\AppData\\Local\\Programs\\Opera GX\\launcher.exe")
-    talk("Retomando guía de programación en Java")
+    ptt3_tools.talk("Retomando guía de programación en Java")
     search_on_navegator("https://skillsforall.com/launch?id=064f3246-8ddc-4375-8e9c-5e3594ca7744")
     pass
 
