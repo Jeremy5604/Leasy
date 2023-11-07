@@ -1,7 +1,4 @@
 import pyautogui as ptg
-#Oculta la ventana de la terminal de windows
-#ptg.hotkey("win","d")
-
 import speech_recognition as sr
 import pywhatkit
 import wikipedia
@@ -33,6 +30,13 @@ ptt3_tools.set_Properties_voice()
 #ptt3_tools.talk("abcdefghijklmnñopqrstuvwxyzaaaa")
 #sys.exit()
 #
+
+#Oculta la ventana de la terminal de windows
+time.sleep(5)
+ptg.hotkey("win","d")
+
+
+
 
 comandos = {"reproduce":" Reproduce un video en youtube",
             "hola":" saluda",
