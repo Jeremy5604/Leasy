@@ -18,7 +18,7 @@ ptg_tools = tools.pyautogui_tools()
 ptt3_tools = tools.pyttsx3_tools()
 sr_tools = tools.speech_recognition_tools()
 
-
+#ptg_tools.locate_pointer() Opcional para encontrar puntos especificos del puntero en pantalla
 
 
 #Variables principales
@@ -32,7 +32,7 @@ ptt3_tools.set_Properties_voice()
 #
 
 #Oculta la ventana de la terminal de windows
-time.sleep(5)
+time.sleep(2)
 ptg.hotkey("win","d")
 
 
@@ -84,12 +84,12 @@ def listen_and_transcribe():#Recibe texto oralmente
 
 
 def SpotifyMusic():#REVISIÓN DE ESTE MÉTODO
-    os.system("start C:\\Users\\Jerem\\AppData\\Roaming\\Spotify\\Spotify.exe ")
+    os.system("start C:\\Users\\Jerem\\AppData\\Local\\Microsoft\\WindowsApps\\Spotify.exe")
     time.sleep(4)
-    ptg.click(214,315,1)
+    ptg.click(202,426,1)
     time.sleep(2)
     ptt3_tools.talk("Reproduciendo canciones favoritas en Spotify")
-    ptg.click(552,493,1)
+    ptg.click(530,539,1)
 
 
 def abrirNavegador():#REVISIÓN DE ESTE MÉTODO
