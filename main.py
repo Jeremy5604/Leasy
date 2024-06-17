@@ -32,9 +32,7 @@ ptt3_tools.set_Properties_voice()
 # sys.exit()
 #
 
-# Oculta la ventana de la terminal de windows
-time.sleep(2)
-ptg.hotkey("win", "d")
+
 
 
 comandos = {
@@ -43,7 +41,6 @@ comandos = {
     "fecha": " Indica la fecha",
     "hora": " Indica la hora",
     "busca": " Investiga información en wikipedia",
-    "Spotify": " Reproduce playlist de canciones favoritas",
     "comandos": " Informa al usuario sobre los comandos disponibles",
 }
 
@@ -64,18 +61,7 @@ def listen_and_transcribe():  # Recibe texto oralmente
     return text
 
 
-# Carcateristicas del time
 
-
-def SpotifyMusic():  # REVISIÓN DE ESTE MÉTODO
-    os.system(
-        "start C:\\Users\\Jerem\\AppData\\Local\\Microsoft\\WindowsApps\\Spotify.exe"
-    )
-    time.sleep(6)
-    ptg.click(202, 426, 1)
-    time.sleep(6)
-    ptt3_tools.talk("Reproduciendo canciones favoritas en Spotify")
-    ptg.click(530, 539, 1)
 
 
 
@@ -153,8 +139,6 @@ def buscarAccion(orden):
         tell_the_time()
     elif "busca" in orden:
         search_on_Wikipedia()
-    elif "spotify" in orden:
-        SpotifyMusic()
     elif "comandos" in orden:
         speak_Comands()
     else:
@@ -174,14 +158,14 @@ def iniciarAsistente():
     ptt3_tools.talk("Hola")
     resp = False
     while resp == False:
-        # ptt3_tools.talk("Comandos disponibles")
-        ##print(end = "|")
-        # for i in comandos:
-        # print(i,end="| |")
-        # print(end = "|\n")
+        #talk("Comandos disponibles") 
+        print(end = "|\n")
+        for i in comandos:
+            print("'"+i+"'" + " : " + comandos.get(i),end="\n")
+        print(end = "|\n")
         text = listen_and_transcribe()
         if text != None:
-            # ptt3_tools.talk("Vuelve a intentarlo")
+            #ptt3_tools.talk("Vuelve a intentarlo")
             resp = True
             # os.system("cls")#Limpia la consola en la terminal
     return text
